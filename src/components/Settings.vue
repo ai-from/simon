@@ -28,10 +28,16 @@
   import Button from "./Button"
   export default {
     name: 'Settings',
-    data: () => ({
-      round: 0,
-      level: 0
-    }),
+    props: {
+      round: {
+        type: Number,
+        default: 0
+      },
+      level: {
+        type: Number,
+        default: 0
+      }
+    },
     components: {
       'v-button': Button
     }
