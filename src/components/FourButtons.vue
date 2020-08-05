@@ -36,14 +36,33 @@
       width: 120px
       height: 120px
       cursor: pointer
+      &:hover
+        box-shadow: inset 4px 4px 4px 4px rgba($black, .5)
       &.red
         background: $red
+        &:hover
+          background: rgba($red, .8)
+          box-shadow: inset 4px 4px 4px 4px rgba($black, .5)
+        &:active
+          background: red
       &.green
         background: $green
+        &:hover
+          background: rgba($green, .8)
+        &:active
+          background: green
       &.blue
         background: $blue
+        &:hover
+          background: rgba($blue, .8)
+        &:active
+          background: blue
       &.yellow
         background: $yellow
+        &:hover
+          background: rgba($yellow, .8)
+        &:active
+          background: yellow
 
 
 </style>
