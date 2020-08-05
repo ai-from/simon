@@ -50,13 +50,13 @@
         &:hover
           background: rgba($green, .8)
         &:active
-          background: green
+          background: #0CD500
       &.blue
         background: $blue
         &:hover
           background: rgba($blue, .8)
         &:active
-          background: blue
+          background: #004DFF
       &.yellow
         background: $yellow
         &:hover
