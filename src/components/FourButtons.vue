@@ -24,22 +24,35 @@
     props: {
       playlist: {
         type: Array,
-        default: [{i: -1, pos: 0, val: 0}]
+        default: []
       }
     },
     methods: {
       playList(){
-        console.log('playList')
-        console.log('-----------------')
-        this.playlist.forEach(x => {
-          console.log(x.i + '  ' + x.pos + '  ' + x.val)
-        })
+        console.log('----------playing list----------')
+        this.readList(1500, 500)
+      },
+      readList(levelTime, beforePlaying){
+        let i = 1
+        const t = this.playlist
+
+        setTimeout(function(){
+          console.log(t[0].i + '  ' + t[0].pos + '  ' + t[0].val)
+          if (t.length > 1) {
+            const playing = setInterval(function(){
+              console.log(t[i].i + '  ' + t[i].pos + '  ' + t[i].val)
+              i++
+              if (i > t.length - 1) clearInterval(playing)
+            }, levelTime)
+          }
+        }, beforePlaying)
+
       }
     },
     watch: {
       playlist: {
         handler: function(val, old){
-          this.playList()
+          if (old){this.playList()}
         },
         deep: true,
         immediate: true

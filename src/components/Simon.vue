@@ -21,7 +21,7 @@
     data: () => ({
       title: 'Simon The Game',
       isGameOn: false,
-      state: [],
+      state: [{i: 0, pos: 0, val: 0}],
       round: 0
     }),
     computed: {
@@ -44,7 +44,7 @@
         return Math.floor(Math.random() * (max - min + 1)) + min
       },
       addElement(){
-        this.state.push({i: this.round - 1, pos: this.getRandom(1,4), val: this.getRandom(1,2)})
+        this.state.push({i: this.round, pos: this.getRandom(1,4), val: this.getRandom(1,2)})
       },
       checkRound(){
 
