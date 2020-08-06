@@ -4,7 +4,7 @@
       class="button"
       v-for="(item, index) in buttons"
       :key="index"
-      :class="item.color"
+      :style="{background: item.color}"
     ></div>
   </div>
 </template>
@@ -14,12 +14,37 @@
     name: 'FourButtons',
     data: () => ({
       buttons: [
-        {color: 'red'},
-        {color: 'green'},
-        {color: 'blue'},
-        {color: 'yellow'}
-      ]
-    })
+        {color: 'orange'},
+        {color: 'pink'},
+        {color: 'brown'},
+        {color: 'gold'}
+      ],
+      time: [1.5, 1, .4]
+    }),
+    props: {
+      playlist: {
+        type: Array,
+        default: [{i: -1, pos: 0, val: 0}]
+      }
+    },
+    methods: {
+      playList(){
+        console.log('playList')
+        console.log('-----------------')
+        this.playlist.forEach(x => {
+          console.log(x.i + '  ' + x.pos + '  ' + x.val)
+        })
+      }
+    },
+    watch: {
+      playlist: {
+        handler: function(val, old){
+          this.playList()
+        },
+        deep: true,
+        immediate: true
+      }
+    }
   }
 </script>
 
@@ -38,31 +63,6 @@
       cursor: pointer
       &:hover
         box-shadow: inset 4px 4px 4px 4px rgba($black, .5)
-      &.red
-        background: $red
-        &:hover
-          background: rgba($red, .8)
-          box-shadow: inset 4px 4px 4px 4px rgba($black, .5)
-        &:active
-          background: red
-      &.green
-        background: $green
-        &:hover
-          background: rgba($green, .8)
-        &:active
-          background: #0CD500
-      &.blue
-        background: $blue
-        &:hover
-          background: rgba($blue, .8)
-        &:active
-          background: #004DFF
-      &.yellow
-        background: $yellow
-        &:hover
-          background: rgba($yellow, .8)
-        &:active
-          background: yellow
-
-
+      &:active
+        background: $grey !important
 </style>

@@ -1,12 +1,15 @@
 <template>
   <div class="simon">
     <div class="title">{{ title }}</div>
-    <v-four-buttons />
+    <v-four-buttons
+      :playlist="state"
+    />
     <v-settings
       :round="round"
       :level="level"
     />
-    <button @click="round++">Round+</button>
+    <button @click="addRound">addRound</button>
+    <pre>{{ state }}</pre>
   </div>
 </template>
 
@@ -18,9 +21,8 @@
     data: () => ({
       title: 'Simon The Game',
       isGameOn: false,
-      state: [0, 0, 0, 0],
-      round: 0,
-      time: [1.5, 1, .4]
+      state: [],
+      round: 0
     }),
     computed: {
       level() {return this.isGameOn ? Math.floor(this.round / 4.1) + 1 : 0}
@@ -31,15 +33,25 @@
     },
     methods: {
       updateGame(){
-        this.state = [0, 0, 0, 0]
+        this.state = []
         this.round = 1
       },
       startGame(){
-        console.log('playing')
+        this.addElement()
+        this.checkRound()
+      },
+      getRandom(min, max){
+        return Math.floor(Math.random() * (max - min + 1)) + min
+      },
+      addElement(){
+        this.state.push({i: this.round - 1, pos: this.getRandom(1,4), val: this.getRandom(1,2)})
+      },
+      checkRound(){
 
       },
-      getRandom(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min
+      addRound(){
+        this.round++
+        this.addElement()
       }
     },
     mounted(){
