@@ -2,6 +2,7 @@
   <div class="four-buttons">
     <div
       class="button"
+      :class="{active: item.active}"
       v-for="(item, index) in buttons"
       :key="index"
       :style="{background: item.color}"
@@ -14,12 +15,12 @@
     name: 'FourButtons',
     data: () => ({
       buttons: [
-        {color: 'orange'},
-        {color: 'pink'},
-        {color: 'brown'},
-        {color: 'gold'}
+        {color: 'orange', active: false},
+        {color: 'pink', active: false},
+        {color: 'brown', active: false},
+        {color: 'gold', active: false}
       ],
-      time: [1.5, 1, .4]
+      speed: [1500, 1000, 400]
     }),
     props: {
       playlist: {
@@ -28,31 +29,41 @@
       }
     },
     methods: {
-      playList(){
-        console.log('----------playing list----------')
-        this.readList(1500, 500)
+      playing(){
+        let speed = this.speed[0]
+        const arr = this.getNewArray()
+        let z = 0
+        const interval = setInterval(() => {
+          this.animateItem(arr[z])
+          z++
+          if(z >= arr.length) clearInterval(interval)
+        }, speed)
       },
-      readList(levelTime, beforePlaying){
-        let i = 1
-        const t = this.playlist
-
-        setTimeout(function(){
-          console.log(t[0].i + '  ' + t[0].pos + '  ' + t[0].val)
-          if (t.length > 1) {
-            const playing = setInterval(function(){
-              console.log(t[i].i + '  ' + t[i].pos + '  ' + t[i].val)
-              i++
-              if (i > t.length - 1) clearInterval(playing)
-            }, levelTime)
+      getNewArray(){
+        const zxc =[]
+        this.playlist.forEach(x => {
+          if(x.val === 1) zxc.push(x.pos)
+          else {
+            let q = 0
+            while(q < x.val){
+              zxc.push(x.pos)
+              q++
+            }
           }
-        }, beforePlaying)
-
+        })
+        return zxc
+      },
+      animateItem(pos){
+        this.buttons[pos - 1].active = true
+        setTimeout(() => {
+          this.buttons[pos - 1].active = false
+        }, 150)
       }
     },
     watch: {
       playlist: {
         handler: function(val, old){
-          if (old){this.playList()}
+          if(old){this.playing()}
         },
         deep: true,
         immediate: true
@@ -78,4 +89,6 @@
         box-shadow: inset 4px 4px 4px 4px rgba($black, .5)
       &:active
         background: $grey !important
+      &.active
+        box-shadow: inset 4px 4px 4px 4px rgba($black, .5)
 </style>
