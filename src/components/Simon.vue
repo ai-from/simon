@@ -3,6 +3,7 @@
     <div class="title">{{ title }}</div>
     <v-four-buttons
       :playlist="state"
+      :level="level"
     />
     <v-settings
       :round="round"

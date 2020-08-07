@@ -17,7 +17,7 @@
       buttons: [
         {color: 'orange', active: false},
         {color: 'pink', active: false},
-        {color: 'brown', active: false},
+        {color: 'indianred', active: false},
         {color: 'gold', active: false}
       ],
       speed: [1500, 1000, 400]
@@ -26,11 +26,15 @@
       playlist: {
         type: Array,
         default: []
+      },
+      level: {
+        type: Number,
+        default: 0
       }
     },
     methods: {
       playing(){
-        let speed = this.speed[0]
+        let speed = this.speed[this.level - 1]
         const arr = this.getNewArray()
         let z = 0
         const interval = setInterval(() => {
