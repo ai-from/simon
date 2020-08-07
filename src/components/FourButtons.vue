@@ -6,6 +6,7 @@
       v-for="(item, index) in buttons"
       :key="index"
       :style="{background: item.color}"
+      @click="checking(index + 1)"
     ></div>
   </div>
 </template>
@@ -20,9 +21,15 @@
         {color: 'indianred', active: false},
         {color: 'gold', active: false}
       ],
-      speed: [1500, 1000, 400]
+      speed: [1500, 1000, 400],
+      isChecking: false,
+      testArray: []
     }),
     props: {
+      isGameOn: {
+        type: Boolean,
+        default: false
+      },
       playlist: {
         type: Array,
         default: []
@@ -34,14 +41,17 @@
     },
     methods: {
       playing(){
-        let speed = this.level < this.speed.length + 1 ? this.speed[this.level - 1] : 400
-        const arr = this.getNewArray()
-        let z = 0
-        const interval = setInterval(() => {
-          this.animateItem(arr[z])
-          z++
-          if(z >= arr.length) clearInterval(interval)
-        }, speed)
+        if(this.isGameOn) {
+          let speed = this.level < this.speed.length + 1 ? this.speed[this.level - 1] : 400
+          const arr = this.getNewArray()
+          this.testArray = arr
+          let z = 0
+          const interval = setInterval(() => {
+            this.animateItem(arr[z])
+            z++
+            if(z >= arr.length) clearInterval(interval)
+          }, speed)
+        }
       },
       getNewArray(){
         const zxc =[]
@@ -62,6 +72,21 @@
         setTimeout(() => {
           this.buttons[pos - 1].active = false
         }, 150)
+      },
+      checking(i){
+        this.isChecking = true
+        if(this.isChecking){
+          if(i === this.testArray[0]) {
+            this.testArray.splice(0, 1)
+            if(this.testArray.length === 0){
+              this.$emit('newRound')
+              this.isChecking = false
+            }
+          } else {
+            this.$root.$emit('gameOver')
+            this.isChecking = false
+          }
+        }
       }
     },
     watch: {

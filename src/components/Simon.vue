@@ -4,13 +4,15 @@
     <v-four-buttons
       :playlist="state"
       :level="level"
+      :isGameOn="isGameOn"
+      @newRound="addRound"
     />
     <v-settings
       :round="round"
       :level="level"
     />
-    <button @click="addRound">addRound</button>
-    <pre>{{ state }}</pre>
+<!--    <button @click="addRound">addRound</button>-->
+<!--    <pre>{{ state }}</pre>-->
   </div>
 </template>
 
@@ -43,17 +45,15 @@
         this.round = 1
       },
       startGame(){
+        this.updateGame()
         this.addElement()
-        this.checkRound()
+        this.$root.$emit('startGame')
       },
       getRandom(min, max){
         return Math.floor(Math.random() * (max - min + 1)) + min
       },
       addElement(){
         this.state.push({i: this.round, pos: this.getRandom(1,4), val: this.getRandom(1,2)})
-      },
-      checkRound(){
-
       },
       addRound(){
         this.round++
@@ -65,6 +65,12 @@
         this.isGameOn = true
         this.updateGame()
         this.startGame()
+      })
+      this.$root.$on('gameOver', () => {
+        this.isGameOn = false
+        this.state = [{i: 0, pos: 0, val: 0}]
+        this.$root.$emit('passedRounds', this.round - 1)
+        this.round = 0
       })
     }
   }

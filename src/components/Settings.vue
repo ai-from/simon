@@ -18,8 +18,8 @@
     <v-button title="Start" />
 
     <div class="res">
-      <div class="won">You won!</div>
-      <div class="lose">You lose!</div>
+      <div v-if="lose" class="lose">Game over</div>
+      <div v-if="lose" class="rounds">You passed {{ passedRounds }} round(s)</div>
     </div>
   </div>
 </template>
@@ -28,6 +28,10 @@
   import Button from "./Button"
   export default {
     name: 'Settings',
+    data: () => ({
+      lose: false,
+      passedRounds: 0
+    }),
     props: {
       round: {
         type: Number,
@@ -40,6 +44,17 @@
     },
     components: {
       'v-button': Button
+    },
+    mounted() {
+      this.$root.$on('startGame', () => {
+        this.lose = false
+      })
+      this.$root.$on('gameOver', () => {
+        this.lose = true
+      })
+      this.$root.$on('passedRounds', round => {
+        this.passedRounds = round
+      })
     }
   }
 </script>
@@ -71,12 +86,10 @@
       text-align: center
       margin: 20px 0
       padding: 10px 0
-      height: 48px
+      height: 64px
       background: $grey
-      .won
-        color: $green
-        display: none
-      .lose
-        color: $red
-        display: none
+      color: $white
+      .rounds
+        font-size: 14px
+
 </style>
