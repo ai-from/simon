@@ -34,7 +34,7 @@
     },
     methods: {
       playing(){
-        let speed = this.speed[this.level - 1]
+        let speed = this.level < this.speed.length + 1 ? this.speed[this.level - 1] : 400
         const arr = this.getNewArray()
         let z = 0
         const interval = setInterval(() => {

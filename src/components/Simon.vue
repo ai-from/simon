@@ -26,7 +26,12 @@
       round: 0
     }),
     computed: {
-      level() {return this.isGameOn ? Math.floor(this.round / 4.1) + 1 : 0}
+      level() {
+        let curr = Math.floor(this.round / 4.1) + 1
+        if(this.isGameOn){
+          return curr >= 4 ? 3 : curr
+        } else return 0
+      }
     },
     components: {
       'v-four-buttons': FourButtons,
