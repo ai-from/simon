@@ -1,5 +1,6 @@
 <template>
-  <div class="four-buttons">
+  <div class="four-buttons"
+       :class="{on: isGameOn, playing: isPlaying}">
     <div
       class="button"
       :class="{active: item.active}"
@@ -21,10 +22,10 @@
         {color: 'indianred', active: false},
         {color: 'gold', active: false}
       ],
-      speed: [1500, 1000, 400],
+      speed: [650, 650, 650],
       isChecking: false,
+      isPlaying: false,
       testArray: [],
-      sound: false,
       sounds: [
         new Audio(require('./../sounds/1.mp3')),
         new Audio(require('./../sounds/2.mp3')),
@@ -44,46 +45,44 @@
       level: {
         type: Number,
         default: 0
+      },
+      sound: {
+        type: Boolean,
+        default: false
       }
     },
     methods: {
       playing(){
+        this.isPlaying = true
         if(this.isGameOn) {
           let speed = this.level < this.speed.length + 1 ? this.speed[this.level - 1] : 400
-          const arr = this.getNewArray()
-          this.testArray = arr
-          let z = 0
+          const arr = this.getExtendedArray()
+          this.testArray = arr; let z = 0
           const interval = setInterval(() => {
-            this.animateItem(arr[z])
-            z++
-            if(z >= arr.length) clearInterval(interval)
+            this.animateItem(arr[z]); z++
+            if(z >= arr.length) {
+              clearInterval(interval)
+              this.isPlaying = false
+            }
           }, speed)
         }
       },
-      getNewArray(){
-        const zxc =[]
+      getExtendedArray(){
+        const zxc = []
         this.playlist.forEach(x => {
           if(x.val === 1) zxc.push(x.pos)
-          else {
-            let q = 0
-            while(q < x.val){
-              zxc.push(x.pos)
-              q++
-            }
-          }
+          else {for(let q = 0; q < x.val; q++){zxc.push(x.pos); q++}}
         })
         return zxc
       },
       animateItem(pos){
         this.buttons[pos - 1].active = true
         if(this.sound) this.sounds[pos - 1].play()
-        setTimeout(() => {
-          this.buttons[pos - 1].active = false
-        }, 150)
+        setTimeout(() => {this.buttons[pos - 1].active = false}, 150)
       },
       checking(i){
         this.isChecking = true
-        if(this.isChecking){
+        if(this.isGameOn && !this.isPlaying){
           if(this.sound) this.sounds[i - 1].play()
           if(i === this.testArray[0]) {
             this.testArray.splice(0, 1)
@@ -92,14 +91,11 @@
               this.isChecking = false
             }
           } else {
-            this.$root.$emit('gameOver')
+            this.$emit('gameOver')
             this.isChecking = false
           }
         }
       }
-    },
-    mounted() {
-      this.$root.$on('sound', (val) => {this.sound = val})
     },
     watch: {
       playlist: {
@@ -121,15 +117,29 @@
     grid-gap: 0
     width: min-content
     margin: 0 auto 40px
-    box-shadow: 2px 2px 4px 4px rgba($black, .5)
     .button
       width: 120px
       height: 120px
-      cursor: pointer
-      &:hover
-        box-shadow: inset 4px 4px 4px 4px rgba($black, .5)
-      &:active
-        background: $grey !important
+      &:first-child
+        border-radius: 50px 0 0 0
+      &:nth-child(2)
+        border-radius: 0 50px 0 0
+      &:nth-child(3)
+        border-radius: 0 0 0 50px
+      &:last-child
+        border-radius: 0 0 50px 0
       &.active
-        box-shadow: inset 4px 4px 4px 4px rgba($black, .5)
+        background: $grey !important
+    &.on:not(.playing)
+      .button
+        border: 1px solid transparent
+        &:hover
+          cursor: pointer
+          //border: 1px solid $white
+        &:active
+          opacity: 1
+          background: $grey !important
+    &.playing
+      .button
+        cursor: not-allowed
 </style>

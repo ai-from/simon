@@ -1,32 +1,62 @@
 <template>
   <div class="simon">
+
     <div class="title">{{ title }}</div>
+
     <v-four-buttons
       :playlist="state"
       :level="level"
       :isGameOn="isGameOn"
+      :sound="sound"
       @newRound="addRound"
+      @gameOver="gameOver"
     />
-    <v-settings
+
+    <v-monitor
       :round="round"
       :level="level"
     />
-<!--    <button @click="addRound">addRound</button>-->
-<!--    <pre>{{ state }}</pre>-->
+
+    <v-button title="Start" @btnStart="startGame" />
+
+    <v-result
+      :lose="lose"
+      :passedRounds="passedRounds"
+    />
+
+    <v-checkbox
+      ID="sound"
+      label="Sound"
+      @input="checkboxClick"
+    />
+
   </div>
 </template>
 
 <script>
   import FourButtons from "./FourButtons"
-  import Settings from "./Settings"
+  import Monitor from "./Monitor"
+  import Button from "./Button"
+  import Result from "./Result"
+  import Checkbox from "./Checkbox"
   export default {
     name: 'Simon',
     data: () => ({
       title: 'Simon The Game',
       isGameOn: false,
       state: [{i: 0, pos: 0, val: 0}],
-      round: 0
+      round: 0,
+      lose: false,
+      passedRounds: 0,
+      sound: false
     }),
+    components: {
+      'v-four-buttons': FourButtons,
+      'v-monitor': Monitor,
+      'v-button': Button,
+      'v-result': Result,
+      'v-checkbox': Checkbox
+    },
     computed: {
       level() {
         let curr = Math.floor(this.round / 4.1) + 1
@@ -35,19 +65,13 @@
         } else return 0
       }
     },
-    components: {
-      'v-four-buttons': FourButtons,
-      'v-settings': Settings
-    },
     methods: {
-      updateGame(){
+      startGame(){
+        this.isGameOn = true
         this.state = []
         this.round = 1
-      },
-      startGame(){
-        this.updateGame()
+        this.lose = false
         this.addElement()
-        this.$root.$emit('startGame')
       },
       getRandom(min, max){
         return Math.floor(Math.random() * (max - min + 1)) + min
@@ -58,29 +82,31 @@
       addRound(){
         this.round++
         this.addElement()
-      }
-    },
-    mounted(){
-      this.$root.$on('btnStart', () => {
-        this.isGameOn = true
-        this.updateGame()
-        this.startGame()
-      })
-      this.$root.$on('gameOver', () => {
+      },
+      checkboxClick(){
+        this.sound = !this.sound
+      },
+      gameOver(){
         this.isGameOn = false
         this.state = [{i: 0, pos: 0, val: 0}]
-        this.$root.$emit('passedRounds', this.round - 1)
+        this.lose = true
+        this.passedRounds = this.round - 1
         this.round = 0
-      })
+      }
     }
   }
 </script>
 
 <style lang="sass">
   .simon
+    width: 240px
+    margin: 0 auto
     .title
       font-size: 30px
       color: $grey
       text-align: center
       margin-bottom: 30px
+    button
+      width: 100%
+      margin: 0 auto
 </style>

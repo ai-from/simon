@@ -1,5 +1,5 @@
 <template>
-  <button @click="btnStart">{{ title }}</button>
+  <button @click="$emit('btnStart')">{{ title }}</button>
 </template>
 
 <script>
@@ -10,9 +10,6 @@
         type: String,
         default: 'Title'
       }
-    },
-    methods: {
-      btnStart() {this.$root.$emit('btnStart')}
     }
   }
 </script>
@@ -21,11 +18,12 @@
   button
     cursor: pointer
     background: $blue
-    padding: 10px 25px
+    padding: 15px 25px
     color: $white
     border: none
+    border-radius: 10px
     outline: none
-    font-size: 18px
+    font-size: 20px
     &:hover
       background: $blue-light
     &:active
