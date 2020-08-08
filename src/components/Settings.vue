@@ -21,16 +21,25 @@
       <div v-if="lose" class="lose">Game over</div>
       <div v-if="lose" class="rounds">You passed {{ passedRounds }} round(s)</div>
     </div>
+
+    <v-checkbox
+      ID="sound"
+      label="Sound"
+      @input="checkboxClick"
+    />
+
   </div>
 </template>
 
 <script>
   import Button from "./Button"
+  import Checkbox from "./Checkbox"
   export default {
     name: 'Settings',
     data: () => ({
       lose: false,
-      passedRounds: 0
+      passedRounds: 0,
+      sound: false
     }),
     props: {
       round: {
@@ -43,7 +52,14 @@
       }
     },
     components: {
-      'v-button': Button
+      'v-button': Button,
+      'v-checkbox': Checkbox
+    },
+    methods: {
+      checkboxClick(){
+        this.sound = !this.sound
+        this.$root.$emit('sound', this.sound)
+      }
     },
     mounted() {
       this.$root.$on('startGame', () => {

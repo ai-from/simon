@@ -23,7 +23,14 @@
       ],
       speed: [1500, 1000, 400],
       isChecking: false,
-      testArray: []
+      testArray: [],
+      sound: false,
+      sounds: [
+        new Audio(require('./../sounds/1.mp3')),
+        new Audio(require('./../sounds/2.mp3')),
+        new Audio(require('./../sounds/3.mp3')),
+        new Audio(require('./../sounds/4.mp3'))
+      ]
     }),
     props: {
       isGameOn: {
@@ -69,6 +76,7 @@
       },
       animateItem(pos){
         this.buttons[pos - 1].active = true
+        if(this.sound) this.sounds[pos - 1].play()
         setTimeout(() => {
           this.buttons[pos - 1].active = false
         }, 150)
@@ -76,6 +84,7 @@
       checking(i){
         this.isChecking = true
         if(this.isChecking){
+          if(this.sound) this.sounds[i - 1].play()
           if(i === this.testArray[0]) {
             this.testArray.splice(0, 1)
             if(this.testArray.length === 0){
@@ -88,6 +97,9 @@
           }
         }
       }
+    },
+    mounted() {
+      this.$root.$on('sound', (val) => {this.sound = val})
     },
     watch: {
       playlist: {
