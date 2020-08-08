@@ -16,22 +16,8 @@
   export default {
     name: 'FourButtons',
     data: () => ({
-      buttons: [
-        {color: 'orange', active: false},
-        {color: 'pink', active: false},
-        {color: 'indianred', active: false},
-        {color: 'gold', active: false}
-      ],
-      speed: [650, 650, 650],
-      isChecking: false,
       isPlaying: false,
-      testArray: [],
-      sounds: [
-        new Audio(require('./../sounds/1.mp3')),
-        new Audio(require('./../sounds/2.mp3')),
-        new Audio(require('./../sounds/3.mp3')),
-        new Audio(require('./../sounds/4.mp3'))
-      ]
+      testArray: []
     }),
     props: {
       isGameOn: {
@@ -49,6 +35,18 @@
       sound: {
         type: Boolean,
         default: false
+      },
+      speed: {
+        type: Array,
+        default: []
+      },
+      buttons: {
+        type: Array,
+        default: []
+      },
+      sounds: {
+        type: Array,
+        default: []
       }
     },
     methods: {
@@ -81,26 +79,19 @@
         setTimeout(() => {this.buttons[pos - 1].active = false}, 150)
       },
       checking(i){
-        this.isChecking = true
         if(this.isGameOn && !this.isPlaying){
           if(this.sound) this.sounds[i - 1].play()
           if(i === this.testArray[0]) {
             this.testArray.splice(0, 1)
-            if(this.testArray.length === 0){
-              this.$emit('newRound')
-              this.isChecking = false
-            }
-          } else {
-            this.$emit('gameOver')
-            this.isChecking = false
-          }
+            if(this.testArray.length === 0) this.$emit('newRound')
+          } else this.$emit('gameOver')
         }
       }
     },
     watch: {
       playlist: {
         handler: function(val, old){
-          if(old){this.playing()}
+          if(old) this.playing()
         },
         deep: true,
         immediate: true
@@ -135,9 +126,7 @@
         border: 1px solid transparent
         &:hover
           cursor: pointer
-          //border: 1px solid $white
         &:active
-          opacity: 1
           background: $grey !important
     &.playing
       .button

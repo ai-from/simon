@@ -1,5 +1,5 @@
 <template>
-  <div class="settings">
+  <div class="monitor">
     <hr>
     <div class="wrap">
 
@@ -34,7 +34,7 @@
 </script>
 
 <style lang="sass" scoped>
-  .settings
+  .monitor
     width: 240px
     margin: 0 auto
     .wrap

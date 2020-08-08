@@ -5,9 +5,12 @@
 
     <v-four-buttons
       :playlist="state"
+      :buttons="buttons"
       :level="level"
       :isGameOn="isGameOn"
       :sound="sound"
+      :sounds="sounds"
+      :speed="speed"
       @newRound="addRound"
       @gameOver="gameOver"
     />
@@ -46,9 +49,22 @@
       isGameOn: false,
       state: [{i: 0, pos: 0, val: 0}],
       round: 0,
+      speed: [400, 400, 400],
       lose: false,
       passedRounds: 0,
-      sound: false
+      sound: false,
+      buttons: [
+        {color: 'orange', active: false},
+        {color: 'pink', active: false},
+        {color: 'indianred', active: false},
+        {color: 'gold', active: false}
+      ],
+      sounds: [
+        new Audio(require('./../sounds/1.mp3')),
+        new Audio(require('./../sounds/2.mp3')),
+        new Audio(require('./../sounds/3.mp3')),
+        new Audio(require('./../sounds/4.mp3'))
+      ]
     }),
     components: {
       'v-four-buttons': FourButtons,
