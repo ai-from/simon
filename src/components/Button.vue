@@ -12,9 +12,7 @@
       }
     },
     methods: {
-      btnStart() {
-        this.$root.$emit('btnStart')
-      }
+      btnStart() {this.$root.$emit('btnStart')}
     }
   }
 </script>
