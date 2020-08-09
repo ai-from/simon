@@ -69,7 +69,7 @@
         const zxc = []
         this.playlist.forEach(x => {
           if(x.val === 1) zxc.push(x.pos)
-          else {for(let q = 0; q < x.val; q++){zxc.push(x.pos); q++}}
+          else for(let q = 0; q < x.val; q++) zxc.push(x.pos)
         })
         return zxc
       },
