@@ -123,7 +123,6 @@
         background: $grey !important
     &.on:not(.playing)
       .button
-        border: 1px solid transparent
         &:hover
           cursor: pointer
         &:active
