@@ -28,7 +28,7 @@
     />
 
     <v-checkbox
-      ID="sound"
+      id="sound"
       label="Sound"
       @input="checkboxClick"
     />
@@ -53,18 +53,8 @@
       lose: false,
       passedRounds: 0,
       sound: false,
-      buttons: [
-        {color: 'orange', active: false},
-        {color: 'pink', active: false},
-        {color: 'indianred', active: false},
-        {color: 'gold', active: false}
-      ],
-      sounds: [
-        new Audio(require('./../sounds/1.mp3')),
-        new Audio(require('./../sounds/2.mp3')),
-        new Audio(require('./../sounds/3.mp3')),
-        new Audio(require('./../sounds/4.mp3'))
-      ]
+      buttons: ['orange', 'pink', 'indianred', 'gold'].map(x => ({color: x, active: false})),
+      sounds: [1, 2, 3, 4].map((x) => new Audio(require(`./../sounds/${x}.mp3`)))
     }),
     components: {
       'v-four-buttons': FourButtons,
@@ -76,9 +66,8 @@
     computed: {
       level() {
         let curr = Math.floor(this.round / 4.1) + 1
-        if(this.isGameOn){
-          return curr >= 4 ? 3 : curr
-        } else return 0
+        if(this.isGameOn) return curr >= 4 ? 3 : curr
+        else return 0
       }
     },
     methods: {

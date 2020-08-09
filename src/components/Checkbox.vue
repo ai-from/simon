@@ -1,8 +1,8 @@
 <template>
   <div class="field">
-    <label :for="ID">{{ label }}:</label>
+    <label :for="id">{{ label }}:</label>
     <input
-      :id="ID"
+      :id="id"
       type="checkbox"
       :value="value"
       @input="$emit('input', $event.target.value)"
@@ -15,7 +15,7 @@
     name: 'Checkbox',
     props: {
       value: {},
-      ID: {
+      id: {
         type: String,
         default: 'id'
       },
