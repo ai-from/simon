@@ -49,7 +49,7 @@
       isGameOn: false,
       state: [{i: 0, pos: 0, val: 0}],
       round: 0,
-      speed: [1500, 1000, 400],
+      speed: [650, 500, 400],
       lose: false,
       passedRounds: 0,
       sound: false,
